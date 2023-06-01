@@ -1,74 +1,52 @@
-import "../styles/cards.scss";
-import Stories from "./Stories";
-import Card from "./Card";
+import "../styles/card.scss";
+import Profile from "./Profile";
+import { ReactComponent as CardButton } from "../images/cardButton.svg";
+import CardMenu from "./CardMenu";
+import Comment from "./Comment";
 
-function Cards() {
-  const commentsOne = [
-    {
-      user: "raffagrassetti",
-      text: "Woah dude, this is awesome! 🔥",
-      id: 1,
-    },
-    {
-      user: "therealadamsavage",
-      text: "Like!",
-      id: 2,
-    },
-    {
-      user: "mapvault",
-      text: "Niceeeee!",
-      id: 3,
-    },
-  ];
-
-  const commentsTwo = [
-    {
-      user: "mapvault",
-      text: "Amazing content, keep it up!",
-      id: 4,
-    },
-  ];
-
-  const commentsThree = [
-    {
-      user: "dadatlacak",
-      text: "Love this!",
-      id: 5,
-    },
-  ];
+function Card(props) {
+  const {
+    storyBorder,
+    image,
+    comments,
+    likedByText,
+    likedByNumber,
+    hours,
+  } = props;
 
   return (
-    <div className="cards">
-      <Stories />
-
-      <Card
-        accountName="rafagrassetti"
-        storyBorder={true}
-        image="https://picsum.photos/800/900"
-        comments={commentsOne}
-        likedByText="dadatlacak"
-        likedByNumber={89}
-        hours={16}
-      />
-      <Card
-        accountName="mapvault"
-        image="https://picsum.photos/800"
-        comments={commentsTwo}
-        likedByText="therealadamsavage"
-        likedByNumber={47}
-        hours={12}
-      />
-      <Card
-        accountName="dadatlacak"
-        storyBorder={true}
-        image="https://picsum.photos/800/1000"
-        comments={commentsThree}
-        likedByText="mapvault"
-        likedByNumber={90}
-        hours={4}
-      />
+    <div className="card">
+      <header>
+        <Profile iconSize="medium" storyBorder={storyBorder} />
+        <CardButton className="cardButton" />
+      </header>
+      <img className="cardImage" src={image} alt="card content" />
+       <CardMenu />  
+      <div className="likedBy">
+        <Profile iconSize="small" hideAccountName={true} />
+        <span>
+          Liked by <strong>{likedByText}</strong> and{" "}
+          <strong>{likedByNumber} others</strong>
+        </span>
+      </div>
+       <div className="comments">
+        {comments.map((comment) => {
+          return (
+            <Comment
+              key={comment.id}
+              accountName={comment.user}
+              comment={comment.text}
+            />
+          );
+        })}
+      </div>  
+      <div className="timePosted">{hours} HOURS AGO</div>
+      <div className="addComment">
+        <div className="commentText">Add a comment...</div>
+        <div className="postText">Post</div>
+      </div>
     </div>
   );
 }
 
-export default Cards;
+export default Card;
